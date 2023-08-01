@@ -1,5 +1,7 @@
 library full_screen_image;
 
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 
 class FullScreenWidget extends StatelessWidget {
@@ -7,11 +9,13 @@ class FullScreenWidget extends StatelessWidget {
       {required this.child,
       this.backgroundColor = Colors.black,
       this.backgroundIsTransparent = true,
+      required this.rotate,
       required this.disposeLevel});
 
   final Widget child;
   final Color backgroundColor;
   final bool backgroundIsTransparent;
+  final bool rotate;
   final DisposeLevel disposeLevel;
 
   @override
@@ -30,6 +34,7 @@ class FullScreenWidget extends StatelessWidget {
                     child: child,
                     backgroundColor: backgroundColor,
                     backgroundIsTransparent: backgroundIsTransparent,
+                    rotate: rotate,
                     disposeLevel: disposeLevel,
                   );
                 }));
@@ -46,11 +51,13 @@ class FullScreenPage extends StatefulWidget {
       {required this.child,
       this.backgroundColor = Colors.black,
       this.backgroundIsTransparent = true,
+      required this.rotate,
       this.disposeLevel = DisposeLevel.Medium});
 
   final Widget child;
   final Color backgroundColor;
   final bool backgroundIsTransparent;
+  final bool rotate;
   final DisposeLevel disposeLevel;
 
   @override
@@ -69,7 +76,6 @@ class _FullScreenPageState extends State<FullScreenPage> {
   double disposeLimit = 150;
 
   Duration animationDuration = Duration.zero;
-
 
   @override
   void initState() {
@@ -106,7 +112,6 @@ class _FullScreenPageState extends State<FullScreenPage> {
     double tmp = positionYDelta < 0
         ? 1 - ((positionYDelta / 1000) * -1)
         : 1 - (positionYDelta / 1000);
-    print(tmp);
 
     if (tmp > 1)
       opacity = 1;
@@ -130,13 +135,12 @@ class _FullScreenPageState extends State<FullScreenPage> {
         positionYDelta = 0;
       });
 
-      Future.delayed(animationDuration).then((_){
+      Future.delayed(animationDuration).then((_) {
         setState(() {
           animationDuration = Duration.zero;
         });
       });
     }
-
   }
 
   @override
@@ -163,7 +167,12 @@ class _FullScreenPageState extends State<FullScreenPage> {
                 bottom: 0 - positionYDelta,
                 left: 0,
                 right: 0,
-                child: widget.child,
+                child: widget.rotate
+                    ? Transform.rotate(
+                        angle: pi / 2,
+                        child: widget.child,
+                      )
+                    : widget.child,
               )
             ],
           ),
