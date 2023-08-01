@@ -1,6 +1,6 @@
 name: full_screen_image
 description: Full screen photo viewer. It shuts off when scrolling vertically. Can work with Hero widget.
-version: 2.0.0
+version: 2.0.2
 homepage: https://github.com/Furkankyl/full_screen_image
 
 environment:
