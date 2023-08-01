@@ -155,9 +155,15 @@ class _FullScreenPageState extends State<FullScreenPage> {
         onVerticalDragEnd: (details) => _endVerticalDrag(details),
         child: Container(
           color: widget.backgroundColor.withOpacity(opacity),
-          constraints: BoxConstraints.expand(
-            height: MediaQuery.of(context).size.height,
-          ),
+          constraints: widget.rotate
+              ? BoxConstraints.expand(
+                  height: MediaQuery.of(context).size.width,
+                  width: MediaQuery.of(context).size.height,
+                )
+              : BoxConstraints.expand(
+                  height: MediaQuery.of(context).size.height,
+                  width: MediaQuery.of(context).size.width,
+                ),
           child: Stack(
             children: <Widget>[
               AnimatedPositioned(
